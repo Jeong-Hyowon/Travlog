@@ -1,0 +1,244 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='')
+    title Travlog
+    //- w3school
+    link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
+    //- Bootstrap
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+    //- Bootstrap core CSS
+    link(href='vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    //- Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' rel='stylesheet')
+    //- Custom styles for this template
+    link(href='css/grayscale.min.css' rel='stylesheet')
+    //- Navigation
+nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+        a.navbar-brand.js-scroll-trigger(href='/') Travlog
+        button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+            | Menu
+            i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href='/#about') Search
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="https://store.naver.com/flights/" target="_blank") Flight
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="http://mindmap.ai:8000/v1/webchat/5d56c8fb65d4400bc524843d" target="_blank") Chatbot                                
+            if user
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/follow') Follow
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/schedule') Schedule                  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/profile') MyPage
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/auth/logout') Logout
+            else
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts' onclick='login()') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList' onclick='login()') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/scrapsList' onclick='login()') Scrap    
+body
+  header.masthead2
+    .container.d-flex.h-100
+      .mx-auto.text-center
+        // 팔로우 팔로잉 정보 보기
+        .timeline(style='background-color:rgba(255, 255, 255, 0.7);width:500px;border-radius:40px;margin-left:27%;margin-bottom:10px')
+          .followings.half
+            h3 Following List
+            if user.Followings
+              for following in user.Followings
+                div= following.nick
+              h10.text-white.mb-5 Total
+              .count.following-count= user.Followings && user.Followings.length || 0 
+          .followers.half
+            h3 Follower List
+            if user.Followers
+              for follower in user.Followers
+                div= follower.nick
+              h10.text-white.mb-5 Total  
+              .count.follower-count= user.Followers && user.Followers.length || 0
+        // 내가 쓴 글 보기
+        //- .twits
+        //-   for twit in twits
+        //-     if user.id == twit.user.id
+        //-       .twit
+        //-         input.twit-user-id(type='hidden' value=twit.user.id)
+        //-         input.twit-id(type='hidden' value=twit.id)
+        //-         .twit-author= twit.user.nick
+        //-         -const follow = user && user.Followings.map(f => f.id).includes(twit.user.id);
+        //-         .twit-content= twit.content
+        //-         if twit.img
+        //-           .twit-img
+        //-             img(src=twit.img alt='섬네일' style="height:400px")
+        //-         a.btn.btn-xs(href="/postsDetail?id="+twit.id) DETAIL
+        //-         img(src='img/like.png' alt='좋아요' style='width: 30px; display: inline;')
+        //-         span(style='display: inline;')
+        //-             input.twit-user-id(type='hidden' value=twit.user.id)
+        //-             input.twit-id(type='hidden' value=twit.id)
+        //-             //- .twit-author= twit.user.nick
+        //-             span.count.liker-count(style='display: inline;')= twit.Liker && twit.Liker.length || 0
+        //-             -const like = user && twit && twit.Liker && twit.Liker.map(l => l.id).includes(user.id);
+        //-             if user && !like
+        //-                 button.like 좋아요
+        //-             else if user && like
+        //-                 button.unlike 좋아요 취소
+        .twits
+          for twit in twits
+            .twit
+              if user.Followings 
+                for following in user.Followings
+                    if following.nick == twit.nick
+                      .w3-third.w3-container.w3-margin-bottom
+                          if twit.img
+                              .twit-img
+                                  img.w3-hover-opacity(src=twit.img alt='섬네일' style='width:100%; height: 300px;')
+                          else
+                              .twit-img
+                                  img.w3-hover-opacity(src='img/default.png' alt='섬네일' style='width:100%; height: 300px;')
+                          .w3-container.w3-white(style='height:200px;')
+                              br
+                              b
+                              .twit-title= twit.title
+                              br
+                              b
+                              .twit-content= twit.content
+                          br
+                          a.btn.btn-primary.mx-auto(href="/postsDetail?id="+twit.id) DETAIL
+                          img(src='img/like.png' alt='좋아요' style='width: 30px; display: inline;margin-left:10px;margin-right:5px;')
+                          span(style='display: inline;')
+                              span.count.liker-count(style='display: inline;')= twit.Liker && twit.Liker.length || 0
+                          -const like = user && twit && twit.Liker && twit.Liker.map(l => l.id).includes(user.id);
+
+//- Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+//- Plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+//- Custom scripts for this template
+script(src='js/grayscale.min.js')
+//- Bootstrap
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+
+script.
+  if (document.getElementById('img')) {
+    document.getElementById('img').addEventListener('change', function (e) {
+      var formData = new FormData();
+      console.log(this, this.files);
+      formData.append('img', this.files[0]);
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var url = JSON.parse(xhr.responseText).url;
+          document.getElementById('img-url').value = url;
+          document.getElementById('img-preview').src = url;
+          document.getElementById('img-preview').style.display = 'inline';
+        } else {
+          console.error(xhr.responseText);
+        }
+      };
+      xhr.open('POST', '/post/img');
+      xhr.send(formData);
+    });
+  }
+  [].forEach.call(document.querySelectorAll('.twit-follow'), function (tag) {
+    tag.addEventListener('click', function () {
+      var isLoggedIn = document.querySelector('#my-id');
+      if (isLoggedIn) {
+        var userId = tag.parentNode.querySelector('.twit-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+          if (confirm('팔로잉하시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                location.reload();
+              } else {
+                console.error(xhr.responseText);
+              }
+            };
+            xhr.open('POST', '/user/' + userId + '/follow');
+            xhr.send();
+          }
+        }
+      }
+    });
+  });
+
+  [].forEach.call(document.querySelectorAll('.twit-unfollow'), function (tag) {
+    tag.addEventListener('click', function () {
+      var isLoggedIn = document.querySelector('#my-id');
+      if (isLoggedIn) {
+        var userId = tag.parentNode.querySelector('.twit-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+          if (confirm('팔로잉 끊으시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                location.reload();
+              } else {
+                console.error(xhr.responseText);
+              }
+            };
+            xhr.open('POST', '/user/' + userId + '/unfollow');
+            xhr.send();
+          }
+        }
+      }
+    });
+  });
+
+  [].forEach.call(document.querySelectorAll('.like'), function (tag) {
+    tag.addEventListener('click', function () {
+      var isLoggedIn = document.querySelector('#my-id');
+      var twitId = tag.parentNode.querySelector('.twit-id').value;
+      if (isLoggedIn) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            location.reload();
+          } else {
+            console.error(xhr.responseText);
+          }
+        };
+        xhr.open('POST', '/post/' + twitId + '/like');
+        xhr.send();
+      }
+    });
+  });
+  [].forEach.call(document.querySelectorAll('.unlike'), function (tag) {
+    tag.addEventListener('click', function () {
+      var isLoggedIn = document.querySelector('#my-id');
+      var twitId = tag.parentNode.querySelector('.twit-id').value;
+      if (isLoggedIn) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            location.reload();
+          } else {
+            console.error(xhr.responseText);
+          }
+        };
+        xhr.open('DELETE', '/post/' + twitId + '/like');
+        xhr.send();
+      }
+    });
+  });
+                  

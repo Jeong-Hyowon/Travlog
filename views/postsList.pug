@@ -1,0 +1,431 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='')
+    title Travlog
+    //- w3school
+    link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
+    //- Bootstrap
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+    //- Bootstrap core CSS
+    link(href='vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    //- Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' rel='stylesheet')
+    //- Custom styles for this template
+    link(href='css/grayscale.min.css' rel='stylesheet')
+
+    link(href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet")
+
+    style.
+        aside li:before {
+        content:'❤';
+        margin-left:10px;
+        background-position: 2px 3px;
+        font-family: FontAwesome;
+        margin-left: -1.0em;
+        margin-right: 0.5em;
+        }
+
+        li {
+        
+        display: flex;
+        align-items: center;
+        background-color: var(--todo-bg-color);
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        }
+
+
+
+        li .buttons {
+        min-width: 100px;
+        margin-right: auto;
+        display: inline;
+        }
+
+        li .buttons button {
+        background:none;
+        min-width: 40px;
+        border: none;
+        font-size: 2rem;
+        }
+
+        /* apply a different style to the completed tasks */
+
+        .completed li {
+        background-color: var(--done-bg-color);
+        text-decoration: line-through;
+        color:#aaa9ab;
+
+        }
+
+        .completed .complete svg path {
+        fill: var(--svg-complete-color);
+        }
+
+        svg {
+        max-width: 25px;
+        }
+
+        /* define the normal color */
+        svg path {
+        fill: var(--svg-normal-color);
+        }
+
+        /* change the color when we hover the icons*/
+        button:hover svg path {
+        fill: var(--svg-hover-color);
+        }
+
+        /* make the remove icon red*/
+        .remove svg path {
+        fill: var(--svg-remove-color);
+        }
+
+        /* make the remove icon a different color on hover */
+        .remove:hover svg path {
+        fill: var(--svg-remove-hover-color);
+        }
+    //- Navigation  
+nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+        a.navbar-brand.js-scroll-trigger(href='/') Travlog
+        button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+            | Menu
+            i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href='#about') Search
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="https://store.naver.com/flights/" target="_blank") Flight
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="http://mindmap.ai:8000/v1/webchat/5d56c8fb65d4400bc524843d" target="_blank") Chatbot                                
+            if user
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/follow') Follow
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/schedule') Schedule                       
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/profile') Mypage                  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/auth/logout') Logout
+            else
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts' onclick='login()') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList' onclick='login()') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/scrapsList' onclick='login()') Scrap                     
+body
+    //- Header
+    header.masthead
+        .container.d-flex.h-100.align-items-center
+            .mx-auto.text-center
+                h1.mx-auto.my-0.text-uppercase(style='font-family:Namsan Godic') Travlog
+                h2.text-white-50.mx-auto.mt-2.mb-5 Leave, now!
+                if user && user.id
+                  .user-name= '안녕하세요! ' + user.nick + '님'
+                  .half
+                    div 팔로잉
+                    .count.following-count= user.Followings && user.Followings.length || 0
+                  .half
+                    div 팔로워
+                    .count.follower-count= user.Followers && user.Followers.length || 0
+                  input#my-id(type='hidden' value=user.id)                
+                if user
+                    a.btn.btn-primary.js-scroll-trigger(href='#about') Search
+                else
+                    a.btn.btn-primary.js-scroll-trigger(href='login') LogIn
+    // About Section
+section#about.about-section5.text-center
+  .container(style='margin-left: 2%; margin-right: 2%;')
+    //- About Section
+    .twits
+        section#about.about-section5.text-center
+            .container
+            for twit in twits
+                .twit
+                    .w3-third.w3-container.w3-margin-bottom
+                        if twit.img
+                            .twit-img
+                                img.w3-hover-opacity(src=twit.img alt='섬네일' style='width:100%; height: 400px;margin-top:20px;')
+                        else
+                            .twit-img
+                                img.w3-hover-opacity(src='img/default.png' alt='섬네일' style='width:100%; height: 400px;margin-top:20px;')
+                        .w3-container.w3-white(style='height:110px;')
+                            .twit-author= twit.user.nick
+                            br
+                            b
+                            .twit-title= twit.title
+                            b
+                            .twit-content= twit.content
+                        br
+                        a.btn.btn-primary.mx-auto(href="/postsDetail?id="+twit.id style='width:110px;height:67px;margin-top:10px;') Post DETAIL
+                        img(src='img/like.png' alt='좋아요' style='width: 30px; display: inline;margin-left:10px;margin-right:5px;')
+                        span(style='display: inline;')
+                            input.twit-user-id(type='hidden' value=twit.user.id)
+                            input.twit-id(type='hidden' value=twit.id)
+                            span.count.liker-count(style='display: inline;')= twit.Liker && twit.Liker.length || 0
+                            -const like = user && twit && twit.Liker && twit.Liker.map(l => l.id).includes(user.id);
+                            if user && !like
+                                button.like(style='margin-left:5px;background-color:#ffffff;border:0;color:#FF1493;font-weight:bold;') Like!
+                            else if user && like
+                                button.unlike(style='margin-left:5px;background-color:#ffffff;border:0;color:#FF1493;font-weight:bold;') Unlike:(
+                            -const follow = user && user.Followings.map(f => f.id).includes(twit.user.id);
+                            if user && user.id !== twit.user.id && !follow
+                                button.twit-follow(style='margin-left:5px;background-color:#ffffff;border:0;color:#7B68EE;font-weight:bold;') Follow
+                            else if user && user.id !== twit.user.id && follow
+                                button.twit-unfollow(style='margin-left:5px;background-color:#ffffff;border:0;color:#7B68EE;font-weight:bold;') Unfollow
+
+aside(style='position: absolute')
+    #container(style='position: fixed; top: 20%; right: 3%;background-color:rgba(255, 255, 255, 0.7);border-radius:10px;')
+        header
+        h2(style='text-align: center;margin-top:20px;margin-bottom:10px;') To Do
+        div(style='margin-left:34%')
+        input(type="text", placeholder="  Enter an activity...  " id="item" style="border:0;margin-left:20px;margin-bottom:10px;border-radius:10px;height:40px;")
+        button#add(style="opacity: 0;")
+            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                path(d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z")
+
+        ul.todo#todo
+
+        h2(style='text-align: center;') Completed
+        ul.completed#completed
+    
+    //- Bootstrap core JavaScript
+    script(src='vendor/jquery/jquery.min.js')
+    script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+    //- Plugin JavaScript
+    script(src='vendor/jquery-easing/jquery.easing.min.js')
+    //- Custom scripts for this template
+    script(src='js/grayscale.min.js')
+    //- Bootstrap
+    script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+
+
+    //- 자바스크립트
+    script.
+        document.addEventListener("DOMContentLoaded", () => {
+            let addButton = document.querySelector("#add");
+            // input field to add new item
+            let addInput = document.querySelector("#item");
+
+            // add the svg icons for the buttons
+            let removeSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm416 56v324c0 26.5-21.5 48-48 48H80c-26.5 0-48-21.5-48-48V140c0-6.6 5.4-12 12-12h360c6.6 0 12 5.4 12 12zm-272 68c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208zm96 0c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208zm96 0c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208z"/></svg>` ;
+
+            let completeSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>` ;
+
+            addButton.addEventListener("click",function(){
+                // grab the value of the input tag
+                let  newItem = document.getElementById("item").value;
+                // if the input tag is not empty then run our function to add an item
+                if(newItem) { 
+                    // this function will add a new item to the todo list
+                    addItemTodo(newItem);
+                    // reset the input after we added a new item
+                    document.getElementById("item").value = "";
+                }
+            });
+
+            // user press enter 
+
+            addInput.addEventListener("keypress",function(e){
+                // did the user press *enter*? if yes then continue
+                if (13 === e.keyCode){
+                    // grab the value of the input tag
+                    let newItem = document.getElementById("item").value;
+                    // if the input tag is not empty then run our function to add an item
+                    if (newItem) {
+                        // this function will add a new item to the todo list
+                        addItemTodo(newItem);
+                        // reset the input after we added a new item
+                        document.getElementById("item").value = "";
+                    }
+                }
+            });
+
+            function addItemTodo(text){
+                // grab the `ul`
+                let list = document.getElementById("todo");
+                // create an `li`
+                let item = document.createElement('li');
+                // set the inside of our `li` the same as the parameter that we passed in the function, which is going to be the value set by the user in the input field
+                item.innerText = text;
+
+                //create container for our buttons remove and complete
+                let buttons = document.createElement('div');
+                buttons.classList.add("buttons");
+
+                // create the two buttons
+
+                let remove = document.createElement('button');
+                remove.classList.add('remove');
+                // add the SVG icon to the button
+                remove.innerHTML = removeSVG;
+                // add event listener for remove
+                // this function will be definedd later
+                remove.addEventListener("click",removeItem);
+
+                let complete = document.createElement('button');
+                complete.classList.add('complete');
+                // add the SVG icon to the button
+                complete.innerHTML = completeSVG;
+                // add event listener for complete
+                // this function will be defined later
+                complete.addEventListener("click",completeItem);
+
+                // append the buttons to the div
+                buttons.appendChild(remove);
+                buttons.appendChild(complete);
+
+                // append the whole div to the li
+                item.appendChild(buttons);
+
+                // prepend the `li` to the `ul`
+                list.insertBefore(item,list.childNodes[0]);
+            }
+
+            function completeItem(){
+                // grab the `li` by targeting the parent of the parent of the button (button -> div -> li)
+                let item = this.parentNode.parentNode;
+                // grab the `ul` (li -> ul)
+                let parent = item.parentNode;
+                // grab the parent id
+                let id = parent.id;
+
+                // check if the item should go in the completed or if it should be re-added to todo by using a ternary operator
+                let target = (id === "todo") ? document.getElementById("completed") : document.getElementById("todo");
+                // remove the item to its current `ul`
+                parent.removeChild(item);
+                // add the item to the new `ul`
+                target.insertBefore(item,target.childNodes[0]);
+            } 
+
+            function removeItem(){
+                // grab the `li` by targeting the parent of the parent of the button (button -> div -> li)
+                let item = this.parentNode.parentNode;
+                // grab the `ul` (li -> ul)
+                let parent  = item.parentNode;
+                // remove `li` from `ul`
+                parent.removeChild(item);
+            }
+        });
+        function login(){
+            alert('로그인 필요');
+        }
+        if (document.getElementById('img')) {
+        document.getElementById('img').addEventListener('change', function (e) {
+            var formData = new FormData();
+            console.log(this, this.files);
+            formData.append('img', this.files[0]);
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+            if (xhr.status === 200) {
+                var url = JSON.parse(xhr.responseText).url;
+                document.getElementById('img-url').value = url;
+                document.getElementById('img-preview').src = url;
+                document.getElementById('img-preview').style.display = 'inline';
+            } else {
+                console.error(xhr.responseText);
+            }
+            };
+            xhr.open('POST', '/post/img');
+            xhr.send(formData);
+        });
+        }
+        [].forEach.call(document.querySelectorAll('.twit-follow'), function (tag) {
+        tag.addEventListener('click', function () {
+            var isLoggedIn = document.querySelector('#my-id');
+            if (isLoggedIn) {
+            var userId = tag.parentNode.querySelector('.twit-user-id').value;
+            var myId = isLoggedIn.value;
+            if (userId !== myId) {
+                if (confirm('팔로잉하시겠습니까?')) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                    location.reload();
+                    } else {
+                    console.error(xhr.responseText);
+                    }
+                };
+                xhr.open('POST', '/user/' + userId + '/follow');
+                xhr.send();
+                }
+            }
+            }
+        });
+        });
+        [].forEach.call(document.querySelectorAll('.twit-unfollow'), function (tag) {
+        tag.addEventListener('click', function () {
+            var isLoggedIn = document.querySelector('#my-id');
+            if (isLoggedIn) {
+            var userId = tag.parentNode.querySelector('.twit-user-id').value;
+            var myId = isLoggedIn.value;
+            if (userId !== myId) {
+                if (confirm('팔로잉 끊으시겠습니까?')) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                    location.reload();
+                    } else {
+                    console.error(xhr.responseText);
+                    }
+                };
+                xhr.open('POST', '/user/' + userId + '/unfollow');
+                xhr.send();
+                }
+            }
+            }
+        });
+        });
+        [].forEach.call(document.querySelectorAll('.like'), function (tag) {
+        tag.addEventListener('click', function () {
+            var isLoggedIn = document.querySelector('#my-id');
+            var twitId = tag.parentNode.querySelector('.twit-id').value;
+            if (isLoggedIn) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                location.reload();
+                } else {
+                console.error(xhr.responseText);
+                }
+            };
+            xhr.open('POST', '/post/' + twitId + '/like');
+            xhr.send();
+            }
+        });
+        });
+        [].forEach.call(document.querySelectorAll('.unlike'), function (tag) {
+        tag.addEventListener('click', function () {
+            var isLoggedIn = document.querySelector('#my-id');
+            var twitId = tag.parentNode.querySelector('.twit-id').value;
+            if (isLoggedIn) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                location.reload();
+                } else {
+                console.error(xhr.responseText);
+                }
+            };
+            xhr.open('DELETE', '/post/' + twitId + '/like');
+            xhr.send();
+            }
+        });
+        });

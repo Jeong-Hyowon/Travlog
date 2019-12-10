@@ -1,0 +1,368 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='')
+    title Travlog
+    //- w3school
+    link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
+    //- Bootstrap
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+    //- Bootstrap core CSS
+    link(href='vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    //- Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' rel='stylesheet')
+    //- Custom styles for this template
+    link(href='css/grayscale.min.css' rel='stylesheet')
+    //- Navigation
+nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+        a.navbar-brand.js-scroll-trigger(href='/') Travlog
+        button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+            | Menu
+            i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href='/#about') Search
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="https://store.naver.com/flights/" target="_blank") Flight
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="http://mindmap.ai:8000/v1/webchat/5d56c8fb65d4400bc524843d" target="_blank") Chatbot                              
+            if user
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/follow') Follow
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/schedule') Schedule     
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/profile') MyPage
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/auth/logout') Logout
+            else
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts' onclick='login()') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList' onclick='login()') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/scrapsList' onclick='login()') Scrap
+                
+body
+    //- Header
+    header.masthead
+        .container.d-flex.h-100.align-items-center
+            .mx-auto.text-center
+                h1.mx-auto.my-0.text-uppercase Travlog
+                h2.text-white-50.mx-auto.mt-2.mb-5 Leave, now!
+                h2.text-white-50.mx-auto.mt-2.mb-5
+                 if user && user.id
+                  .user-name= '안녕하세요! ' + user.nick + '님'            
+                if user
+                    a.btn.btn-primary.js-scroll-trigger(href='#about') Search
+                else
+                    a.btn.btn-primary.js-scroll-trigger(href='login') LogIn
+    // About Section
+section#about.about-section.text-center
+  .container
+    .row
+      .col-md-10.col-lg-8.mx-auto.text-center
+        a(href='/') 
+                img(src="/logo1.png")
+        h2.text-white.mb-5 찾고싶은 여행지나 숙소, 맛집을 검색해보세요!
+        form.form-inline.d-flex
+        form#hashtag-form(action='/post/hashtag')
+                input#inputSearch.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='text' name='hashtag' placeholder='여행지, 숙소, 맛집' style='width:500px;margin-left:120px;')
+                button.btn.btn-primary.mx-auto( style="margin-top:40px;") Search
+section#about.about-section4.text-center              
+  .container              
+    .row            
+      .col-md-10.col-lg-8.mx-auto.text-center
+        a(href='/') 
+                img(src="/logo1.png")
+        h2.text-white.mb-5 어디로 떠나세요?
+        div
+         .child-page-listing
+          .grid-container
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%8C%8C%EB%A6%AC')
+                | Paris
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%8C%8C%EB%A6%AC')
+                 img(width='170', height='140',src="/paris.jpg", alt='Paris')
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EC%83%81%ED%95%B4')
+                | Shanghai
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EC%83%81%ED%95%B4')
+                 img(width='170', height='140',src="/shanghai.jpg" alt='Shanghai')
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%89%B4%EC%9A%95')
+                | NewYork
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%89%B4%EC%9A%95')
+                 img(width='170', height='140',src="/newyork.jpg" alt='NewYork')
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%99%8D%EC%BD%A9')
+                | HongKong
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%99%8D%EC%BD%A9')
+                 img(width='170', height='140',src="/hongkong.jpg" alt='HongKong')
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%B0%A9%EC%BD%95')
+                | BangKok
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%B0%A9%EC%BD%95')
+                 img(width='170', height='140',src="/bangkok.jpg" alt='Bangkok')
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4')
+                | Fukuoka
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4')
+                 img(width='170', height='140',src="/fukuoka.jpg" alt='Fukuoka')
+
+section#about.about-section2.text-center                   
+  .container              
+    .row            
+      .col-md-10.col-lg-8.mx-auto.text-center 
+        a(href='/') 
+                img(src="/logo1.png")
+        h2.text-white.mb-5 내 입맛에 딱 맞는 음식은?
+        div
+         .child-page-listing
+          .grid-container
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%96%84%EB%B2%84%EA%B1%B0')
+                | Hamburger
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%96%84%EB%B2%84%EA%B1%B0')
+                 img(width='170', height='140',src="/hamburger.jpg" alt="햄버거")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%94%A4%EC%84%AC')
+                | Dimsum
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%94%A4%EC%84%AC')
+                 img(width='170', height='140',src="/dimsum.jpg" alt="딤섬")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%9D%BC%EB%A9%98')
+                | Ramen
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%9D%BC%EB%A9%98')
+                 img(width='170', height='140',src="/ramen.jpg" alt="라멘")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EC%96%91%EA%BC%AC%EC%B9%98')
+                | Skewers
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EC%96%91%EA%BC%AC%EC%B9%98')
+                 img(width='170', height='140',src="/sheep.jpg" alt="양꼬치")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%8D%AE%EB%B0%A5')
+                | RiceBowl
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%8D%AE%EB%B0%A5')
+                 img(width='170', height='140',src="/rice.jpg" alt="덮밥")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%94%94%EC%A0%80%ED%8A%B8')
+                | Dessert
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%94%94%EC%A0%80%ED%8A%B8')
+                 img(width='170', height='140',src="/dessert.jpg" alt="디저트")
+
+section#about.about-section3.text-center              
+  .container              
+    .row            
+      .col-md-10.col-lg-8.mx-auto.text-center 
+        a(href='/') 
+                img(src="/logo1.png")
+        h2.text-white.mb-5 낯선 곳에서도 푹 잘 수 있는 곳은?
+        div
+         .child-page-listing
+          .grid-container
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EB%A7%88%EB%A6%AC%EB%82%98%EB%B2%A0%EC%9D%B4%EC%83%8C%EC%A6%88')
+                | MarinaBaySands
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EB%A7%88%EB%A6%AC%EB%82%98%EB%B2%A0%EC%9D%B4%EC%83%8C%EC%A6%88')
+                 img(width='170', height='140',src="/marina.jpg" alt="마리나베이샌즈")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%95%98%EB%B2%84%EA%B7%B8%EB%9E%9C%EB%93%9C%EA%B5%AC%EB%A3%A1')
+                | HarborGrand
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%95%98%EB%B2%84%EA%B7%B8%EB%9E%9C%EB%93%9C%EA%B5%AC%EB%A3%A1')
+                 img(width='170', height='140',src="/grand.jpg" alt="하버그랜드구룡" )
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EC%95%84%EB%A5%B4%EB%A7%88%EB%8B%88')
+                | Armani
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EC%95%84%EB%A5%B4%EB%A7%88%EB%8B%88')
+                 img(width='170', height='140', src="/italy.jpg" alt="아르마니 호텔 밀라노")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%81%AC%EB%A6%BC%EC%8A%A8%EB%A6%AC%EC%A1%B0%ED%8A%B8')
+                | Crimson
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%81%AC%EB%A6%BC%EC%8A%A8%EB%A6%AC%EC%A1%B0%ED%8A%B8')
+                 img(width='170', height='140', src="/cebu.jpg" alt="세부 크림슨리조트")
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%EA%B0%A4%EB%9F%AD%EC%8B%9C')
+                | Galaxy
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%EA%B0%A4%EB%9F%AD%EC%8B%9C')
+                 img(width='170', height='140',src="/macao.jpg" alt="갤럭시 호텔 마카오" )
+            article#3685.location-listing
+              a.location-title(href='http://localhost:8001/post/hashtag?hashtag=%ED%93%A8%EC%A0%84%EB%A6%AC%EC%A1%B0%ED%8A%B8')
+                | FusionResort 
+              .location-image
+                a(href='http://localhost:8001/post/hashtag?hashtag=%ED%93%A8%EC%A0%84%EB%A6%AC%EC%A1%B0%ED%8A%B8')
+                 img(width='170', height='140', src="/vietnam.jpg" alt="퓨전 리조트 나트랑")                                   
+
+section#about.about-section5.text-center    
+    //- About Section
+    .twits
+        for twit in twits
+            .twit
+                .w3-third.w3-container.w3-margin-bottom
+                    if twit.img
+                        .twit-img
+                            img.w3-hover-opacity(src=twit.img alt='섬네일' style='width:100%; height: 400px;margin-top:20px;')
+                    else
+                        .twit-img
+                            img.w3-hover-opacity(src='img/default.png' alt='섬네일' style='width:100%; height: 400px;margin-top:20px;')
+                    .w3-container.w3-white(style='height:100px;')
+                        br
+                        b
+                        .twit-title= twit.title
+                        br
+                        b
+                        .twit-content= twit.content
+                    br
+                    a.btn.btn-primary.mx-auto(href="/postsDetail?id="+twit.id) Post DETAIL
+                    img(src='img/like.png' alt='좋아요' style='margin-left:20px;margin-right:10px;width: 30px; display: inline;')
+                    span(style='display: inline;')
+                        span.count.liker-count(style='display: inline;')= twit.Liker && twit.Liker.length || 0
+                    -const like = user && twit && twit.Liker && twit.Liker.map(l => l.id).includes(user.id);
+    
+//- Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+//- Plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+//- Custom scripts for this template
+script(src='js/grayscale.min.js')
+//- Bootstrap
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+
+//- 자바스크립트
+script.
+    function login(){
+        alert('로그인 필요');
+    }
+
+    if (document.getElementById('img')) {
+    document.getElementById('img').addEventListener('change', function (e) {
+        var formData = new FormData();
+        console.log(this, this.files);
+        formData.append('img', this.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+        if (xhr.status === 200) {
+            var url = JSON.parse(xhr.responseText).url;
+            document.getElementById('img-url').value = url;
+            document.getElementById('img-preview').src = url;
+            document.getElementById('img-preview').style.display = 'inline';
+        } else {
+            console.error(xhr.responseText);
+        }
+        };
+        xhr.open('POST', '/post/img');
+        xhr.send(formData);
+    });
+    }
+    [].forEach.call(document.querySelectorAll('.twit-follow'), function (tag) {
+    tag.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#my-id');
+        if (isLoggedIn) {
+        var userId = tag.parentNode.querySelector('.twit-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+            if (confirm('팔로잉하시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                location.reload();
+                } else {
+                console.error(xhr.responseText);
+                }
+            };
+            xhr.open('POST', '/user/' + userId + '/follow');
+            xhr.send();
+            }
+        }
+        }
+    });
+    });
+    [].forEach.call(document.querySelectorAll('.twit-unfollow'), function (tag) {
+    tag.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#my-id');
+        if (isLoggedIn) {
+        var userId = tag.parentNode.querySelector('.twit-user-id').value;
+        var myId = isLoggedIn.value;
+        if (userId !== myId) {
+            if (confirm('팔로잉 끊으시겠습니까?')) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                location.reload();
+                } else {
+                console.error(xhr.responseText);
+                }
+            };
+            xhr.open('POST', '/user/' + userId + '/unfollow');
+            xhr.send();
+            }
+        }
+        }
+    });
+    });
+    [].forEach.call(document.querySelectorAll('.like'), function (tag) {
+    tag.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#my-id');
+        var twitId = tag.parentNode.querySelector('.twit-id').value;
+        if (isLoggedIn) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+            location.reload();
+            } else {
+            console.error(xhr.responseText);
+            }
+        };
+        xhr.open('POST', '/post/' + twitId + '/like');
+        xhr.send();
+        }
+    });
+    });
+    [].forEach.call(document.querySelectorAll('.unlike'), function (tag) {
+    tag.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#my-id');
+        var twitId = tag.parentNode.querySelector('.twit-id').value;
+        if (isLoggedIn) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+            location.reload();
+            } else {
+            console.error(xhr.responseText);
+            }
+        };
+        xhr.open('DELETE', '/post/' + twitId + '/like');
+        xhr.send();
+        }
+    });
+    });

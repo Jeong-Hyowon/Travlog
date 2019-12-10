@@ -1,0 +1,479 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='')
+    title Travlog
+    //- w3school
+    link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
+    //- Bootstrap
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+    //- Bootstrap core CSS
+    link(href='vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    //- Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' rel='stylesheet')
+    //- Custom styles for this template
+    link(href='css/grayscale.min.css' rel='stylesheet')
+
+    style.
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #wrapper{
+            position: relative;
+            top: 2%;
+        }
+        #map {
+            height: 500px !important;
+            width: 100% !important;
+            position: absolute;
+            margin-top: 1%;
+        }
+        #mapOne {
+            margin-top: 40px;
+            width: 440px;
+            height: 50%;
+            width: 50%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .delete-menu {
+            position: absolute;
+            background: white;
+            padding: 3px;
+            color: #666;
+            font-weight: bold;
+            border: 1px solid #999;
+            font-family: sans-serif;
+            font-size: 12px;
+            box-shadow: 1px 3px 3px rgba(0, 0, 0, .3);
+            margin-top: -10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .delete-menu:hover {
+            background: #eee;
+        }
+        .hotel-search {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            left: 0;
+            top: 0;
+            width: 440px;
+            z-index: 1;
+        }
+        #listing {
+            margin-top: 1%;
+            position: absolute;
+            width: 200px;
+            height: 470px;
+            overflow: auto;
+            left: 82%;
+            top: 0px;
+            cursor: pointer;
+            overflow-x: hidden;
+        }
+        #findhotels {
+            font-size: 14px;
+        }
+        #locationField {
+            -webkit-box-flex: 1 1 190px;
+            -ms-flex: 1 1 190px;
+            flex: 1 1 190px;
+            margin: 0 8px;
+        }
+        #controls {
+            -webkit-box-flex: 1 1 140px;
+            -ms-flex: 1 1 140px;
+            flex: 1 1 140px;
+        }
+        #autocomplete {
+            width: 100%;
+        }
+        #country {
+            width: 100%;
+        }
+        .placeIcon {
+            width: 20px;
+            height: 34px;
+            margin: 4px;
+        }
+        .hotelIcon {
+            width: 24px;
+            height: 24px;
+        }
+        #resultsTable {
+            border-collapse: collapse;
+            width: 240px;
+        }
+        #rating {
+            font-size: 13px;
+            font-family: Arial Unicode MS;
+        }
+        .iw_table_row {
+            height: 18px;
+        }
+        .iw_attribute_name {
+            font-weight: bold;
+            text-align: right;
+        }
+        .iw_table_icon {
+            text-align: right;
+        }
+
+nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+        a.navbar-brand.js-scroll-trigger(href='/') Travlog
+        button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+            | Menu
+            i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href='/#about') Search
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="https://store.naver.com/flights/" target="_blank") Flight
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="http://mindmap.ai:8000/v1/webchat/5d56c8fb65d4400bc524843d" target="_blank") Chatbot                
+            if user
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/follow') Follow                    
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/schedule') Schedule
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/profile') MyPage
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/auth/logout') Logout
+            else
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts' onclick='login()') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList' onclick='login()') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/scrapsList' onclick='login()') Scrap
+.masthead
+    .container(style='padding-top: 7%;')
+        .hotel-search
+            #findhotels(style='width: 28%; color: white; font-size: medium; font-weight: bold;')
+                | Find hotels in:
+            #locationField
+                input#autocomplete(placeholder='Enter a city' type='text' style='width: 100%;')
+            #controls
+                select#country
+                    option(value='all') All
+                    option(value='au') Australia
+                    option(value='br') Brazil
+                    option(value='ca') Canada
+                    option(value='fr') France
+                    option(value='de') Germany
+                    option(value='mx') Mexico
+                    option(value='nz') New Zealand
+                    option(value='it') Italy
+                    option(value='za') South Africa
+                    option(value='es') Spain
+                    option(value='pt') Portugal
+                    option(value='us' selected='') U.S.A.
+                    option(value='uk') United Kingdom
+        #wrapper
+            #map
+            #listing
+                table#resultsTable
+                    tbody#results
+        div(style='display: none')
+            #info-content
+                table
+                    tr#iw-url-row.iw_table_row
+                        td#iw-icon.iw_table_icon
+                        td#iw-url
+                    tr#iw-address-row.iw_table_row
+                        td.iw_attribute_name Address:
+                        td#iw-address
+                    tr#iw-phone-row.iw_table_row
+                        td.iw_attribute_name Telephone:
+                        td#iw-phone
+                    tr#iw-rating-row.iw_table_row
+                        td.iw_attribute_name Rating:
+                        td#iw-rating
+                    tr#iw-website-row.iw_table_row
+                        td.iw_attribute_name Website:
+                        td#iw-website
+//- Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+//- Plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+//- Custom scripts for this template
+script(src='js/grayscale.min.js')
+//- Bootstrap
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+script.
+  // This example uses the autocomplete feature of the Google Places API.
+  // It allows the user to find all hotels in a given place, within a given
+  // country. It then displays markers for all the hotels returned,
+  // with on-click details for each hotel.
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+  var map, places, infoWindow;
+  var markers = [];
+  var autocomplete;
+  var countryRestrict = {'country': 'us'};
+  var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+  var hostnameRegexp = new RegExp('^https?://.+?/');
+  var countries = {
+    'au': {
+        center: {lat: -25.3, lng: 133.8},
+        zoom: 4
+    },
+    'br': {
+        center: {lat: -14.2, lng: -51.9},
+        zoom: 3
+    },
+    'ca': {
+        center: {lat: 62, lng: -110.0},
+        zoom: 3
+    },
+    'fr': {
+        center: {lat: 46.2, lng: 2.2},
+        zoom: 5
+    },
+    'de': {
+        center: {lat: 51.2, lng: 10.4},
+        zoom: 5
+    },
+    'mx': {
+        center: {lat: 23.6, lng: -102.5},
+        zoom: 4
+    },
+    'nz': {
+        center: {lat: -40.9, lng: 174.9},
+        zoom: 5
+    },
+    'it': {
+        center: {lat: 41.9, lng: 12.6},
+        zoom: 5
+    },
+    'za': {
+        center: {lat: -30.6, lng: 22.9},
+        zoom: 5
+    },
+    'es': {
+        center: {lat: 40.5, lng: -3.7},
+        zoom: 5
+    },
+    'pt': {
+        center: {lat: 39.4, lng: -8.2},
+        zoom: 6
+    },
+    'us': {
+        center: {lat: 37.1, lng: -95.7},
+        zoom: 3
+    },
+    'uk': {
+        center: {lat: 54.8, lng: -4.6},
+        zoom: 5
+    }
+  };
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: countries['us'].zoom,
+        center: countries['us'].center,
+        mapTypeControl: false,
+        panControl: false,
+        zoomControl: false,
+        streetViewControl: false
+    });
+    infoWindow = new google.maps.InfoWindow({
+        content: document.getElementById('info-content')
+    });
+    // Create the autocomplete object and associate it with the UI input control.
+    // Restrict the search to the default country, and to place type "cities".
+    autocomplete = new google.maps.places.Autocomplete(
+    /** @type {!HTMLInputElement} */ (
+    document.getElementById('autocomplete')), {
+        types: ['(cities)'],
+        componentRestrictions: countryRestrict
+    });
+    places = new google.maps.places.PlacesService(map);
+    autocomplete.addListener('place_changed', onPlaceChanged);
+    // Add a DOM event listener to react when the user selects a country.
+    document.getElementById('country').addEventListener('change', setAutocompleteCountry);
+  }
+  // When the user selects a city, get the place details for the city and
+  // zoom the map in on the city.
+  function onPlaceChanged() {
+    var place = autocomplete.getPlace();
+    if (place.geometry) {
+        map.panTo(place.geometry.location);
+        map.setZoom(15);
+        search();
+    } else {
+        ocument.getElementById('autocomplete').placeholder = 'Enter a city';
+    }
+  }
+  // Search for hotels in the selected city, within the viewport of the map.
+  function search() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['lodging']
+    };
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearResults();
+            clearMarkers();
+            // Create a marker for each hotel found, and
+            // assign a letter of the alphabetic to each marker icon.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+                // Use marker animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+                // If the user clicks a hotel marker, show the details of that hotel
+                // in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+  }
+  function clearMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+        if (markers[i]) {
+            markers[i].setMap(null);
+        }
+    }
+    markers = [];
+  }
+  // Set the country restriction based on user input.
+  // Also center and zoom the map on the given country.
+  function setAutocompleteCountry() {
+    var country = document.getElementById('country').value;
+    if (country == 'all') {
+        autocomplete.setComponentRestrictions({'country': []});
+        map.setCenter({lat: 15, lng: 0});
+        map.setZoom(2);
+    } else {
+        autocomplete.setComponentRestrictions({'country': country});
+        map.setCenter(countries[country].center);
+        map.setZoom(countries[country].zoom);
+    }
+    clearResults();
+    clearMarkers();
+  }
+  function dropMarker(i) {
+    return function() {
+        markers[i].setMap(map);
+    };
+  }
+  function addResult(result, i) {
+    var results = document.getElementById('results');
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+        google.maps.event.trigger(markers[i], 'click');
+    };
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+  }
+  function clearResults() {
+    var results = document.getElementById('results');
+    while (results.childNodes[0]) {
+        esults.removeChild(results.childNodes[0]);
+    }
+  }
+  // Get the place details for a hotel. Show the information in an info window,
+  // anchored on the marker for the hotel that the user selected.
+  function showInfoWindow() {
+    var marker = this;
+    places.getDetails({placeId: marker.placeResult.place_id},
+    function(place, status) {
+        if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            return;
+        }
+        infoWindow.open(map, marker);
+        buildIWContent(place);
+    });
+  }
+  // Load the place information into the HTML elements used by the info window.
+  function buildIWContent(place) {
+    document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
+    'src="' + place.icon + '"/>';
+    document.getElementById('iw-url').innerHTML = '<b><a href="' + place.url +
+    '">' + place.name + '</a></b>';
+    document.getElementById('iw-address').textContent = place.vicinity;
+    if (place.formatted_phone_number) {
+        document.getElementById('iw-phone-row').style.display = '';
+        document.getElementById('iw-phone').textContent =
+        place.formatted_phone_number;
+    } else {
+        document.getElementById('iw-phone-row').style.display = 'none';
+    }
+    // Assign a five-star rating to the hotel, using a black star ('&#10029;')
+    // to indicate the rating the hotel has earned, and a white star ('&#10025;')
+    // for the rating points not achieved.
+    if (place.rating) {
+        var ratingHtml = '';
+        for (var i = 0; i < 5; i++) {
+            if (place.rating < (i + 0.5)) {
+                ratingHtml += '&#10025;';
+            } else {
+                ratingHtml += '&#10029;';
+            }
+            document.getElementById('iw-rating-row').style.display = '';
+            document.getElementById('iw-rating').innerHTML = ratingHtml;
+        }
+    } else {
+        document.getElementById('iw-rating-row').style.display = 'none';
+    }
+    // The regexp isolates the first part of the URL (domain plus subdomain)
+    // to give a short URL for displaying in the info window.
+    if (place.website) {
+        var fullUrl = place.website;
+        var website = hostnameRegexp.exec(place.website);
+        if (website === null) {
+            website = 'http://' + place.website + '/';
+            fullUrl = website;
+        }
+        document.getElementById('iw-website-row').style.display = '';
+        document.getElementById('iw-website').textContent = website;
+    } else {
+        document.getElementById('iw-website-row').style.display = 'none';
+    }
+  }
+//- Google Map
+script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCqr99Xzcn7aS-nziIJ7Wpl4eE7giNJ6RI&libraries=places&callback=initMap' type='text/javascript')
+

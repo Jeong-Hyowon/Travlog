@@ -1,0 +1,360 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='')
+    meta(name='author' content='')
+    title Travlog
+    //- w3school
+    link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
+    //- Bootstrap
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+    //- Bootstrap core CSS
+    link(href='vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    //- Custom fonts for this template
+    link(href='vendor/fontawesome-free/css/all.min.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i' rel='stylesheet')
+    //- Custom styles for this template
+    link(href='css/grayscale.min.css' rel='stylesheet')
+
+    style.
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #wrapper{
+            position: relative;
+            top: 2%;
+        }
+        #map {
+            height: 500px !important;
+            width: 100% !important;
+            position: absolute;
+            margin-top: 1%;
+        }
+        .delete-menu {
+            position: absolute;
+            background: white;
+            padding: 3px;
+            color: #666;
+            font-weight: bold;
+            border: 1px solid #999;
+            font-family: sans-serif;
+            font-size: 12px;
+            box-shadow: 1px 3px 3px rgba(0, 0, 0, .3);
+            margin-top: -10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .delete-menu:hover {
+            background: #eee;
+        }
+        aside li:before {
+            content:'❤';
+            margin-left:10px;
+            background-position: 2px 3px;
+            font-family: FontAwesome;
+            margin-left: -1.0em;
+            margin-right: 0.5em;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            background-color: var(--todo-bg-color);
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        li .buttons {
+            min-width: 100px;
+            margin-right: auto;
+            display: inline;
+        }
+
+        li .buttons button {
+            background:none;
+            min-width: 40px;
+            border: none;
+            font-size: 2rem;
+        }
+
+        /* apply a different style to the completed tasks */
+
+        .completed li {
+            background-color: var(--done-bg-color);
+            text-decoration: line-through;
+            color:#aaa9ab;
+        }
+
+        .completed .complete svg path {
+            fill: var(--svg-complete-color);
+        }
+
+        svg {
+            max-width: 25px;
+        }
+
+        /* define the normal color */
+        svg path {
+            ill: var(--svg-normal-color);
+        }
+
+        /* change the color when we hover the icons*/
+        button:hover svg path {
+            fill: var(--svg-hover-color);
+        }
+
+        /* make the remove icon red*/
+        .remove svg path {
+            fill: var(--svg-remove-color);
+        }
+
+        /* make the remove icon a different color on hover */
+        .remove:hover svg path {
+            fill: var(--svg-remove-hover-color);
+        }
+nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+    .container
+        a.navbar-brand.js-scroll-trigger(href='/') Travlog
+        button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+            | Menu
+            i.fas.fa-bars
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href='/#about') Search
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="https://store.naver.com/flights/" target="_blank") Flight
+            li.nav-item
+                a.nav-link.js-scroll-trigger(href="http://mindmap.ai:8000/v1/webchat/5d56c8fb65d4400bc524843d" target="_blank") Chatbot                
+            if user
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/follow') Follow                    
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/schedule') Schedule
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/profile') MyPage
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/auth/logout') Logout
+            else
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/addPosts' onclick='login()') Write  
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/postsList' onclick='login()') Posts
+                li.nav-item
+                    a.nav-link.js-scroll-trigger(href='/scrapsList' onclick='login()') Scrap
+
+.masthead
+    .container(style='margin-left: 3%; padding-top: 7%;')
+        div 
+            input#address.form-control.flex-fill.mr-0.mr-sm-2.mb-3.mb-sm-0(type='textbox' placeholder='Search, Now' style='display: inline-block; width: 43%;')
+            input#submit.btn.btn-primary(type='button' value='Search' style='padding: 0.8rem 1.3rem;')
+            a(href="/scheduleHotel"  target='_blank')
+                button.btn.btn-primary(type='button' style='margin-left: 38%; padding: 0.8rem 1.3rem;') 호텔검색
+        #wrapper
+            #map
+
+    aside
+        #container(style='position: fixed; top: 14.5%; right: 3%;background-color:rgba(255, 255, 255, 0.7);border-radius:10px;')
+            header
+            h2(style='text-align: center;margin-top:20px;margin-bottom:10px;') Make To Do List
+            div(style='margin-left:34%')
+            input(type="text", placeholder="  Enter an activity...  " id="item" style="border:0;margin-bottom:10px;margin-left:20px;border-radius:10px;height:40px;")
+            button#add(style="opacity: 0.1;")
+                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                    path(d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z")
+
+            ul.todo#todo
+
+            h2(style='text-align: center;') Completed
+            ul.completed#completed
+
+//- Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+//- Plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+//- Custom scripts for this template
+script(src='js/grayscale.min.js')
+//- Bootstrap
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+script.
+
+    var poly;
+    var map;
+
+    function initMap() {
+        var latlng = new google.maps.LatLng(48.8566140, 2.3522219);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: latlng
+        });
+
+        poly = new google.maps.Polyline({
+            strokeColor: '#000000',
+            strokeOpacity: 1.0,
+            strokeWeight: 3
+        });
+
+        poly.setMap(map);
+
+        var geocoder = new google.maps.Geocoder();
+
+        document.getElementById('submit').addEventListener('click', function() {
+            geocodeAddress(geocoder, map);
+        });
+
+        // Add a listener for the click event
+        map.addListener('click', addLatLng);
+    }
+
+    function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('address').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+                resultsMap.setCenter(results[0].geometry.location);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    var marker;
+
+    // Handles click events on a map, and adds a new point to the Polyline.
+    function addLatLng(event) {
+        var path = poly.getPath();
+
+        // Because path is an MVCArray, we can simply append a new coordinate
+        // and it will automatically appear.
+        path.push(event.latLng);
+
+        // Add a new marker at the new plotted point on the polyline.
+        marker = new google.maps.Marker({
+            position: event.latLng,
+            title: '#' + path.getLength(),
+            map: map
+        });
+    }
+
+
+//- Google Map
+script(async defer src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCqr99Xzcn7aS-nziIJ7Wpl4eE7giNJ6RI&callback=initMap' type='text/javascript')
+
+//- 자바스크립트
+script.
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        let addButton = document.querySelector("#add");
+        // input field to add new item
+        let addInput = document.querySelector("#item");
+
+        // add the svg icons for the buttons
+        let removeSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 84V56c0-13.3 10.7-24 24-24h112l9.4-18.7c4-8.2 12.3-13.3 21.4-13.3h114.3c9.1 0 17.4 5.1 21.5 13.3L312 32h112c13.3 0 24 10.7 24 24v28c0 6.6-5.4 12-12 12H12C5.4 96 0 90.6 0 84zm416 56v324c0 26.5-21.5 48-48 48H80c-26.5 0-48-21.5-48-48V140c0-6.6 5.4-12 12-12h360c6.6 0 12 5.4 12 12zm-272 68c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208zm96 0c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208zm96 0c0-8.8-7.2-16-16-16s-16 7.2-16 16v224c0 8.8 7.2 16 16 16s16-7.2 16-16V208z"/></svg>` ;
+
+        let completeSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>` ;
+
+        addButton.addEventListener("click",function(){
+            // grab the value of the input tag
+            let  newItem = document.getElementById("item").value;
+            // if the input tag is not empty then run our function to add an item
+            if(newItem) { 
+                // this function will add a new item to the todo list
+                addItemTodo(newItem);
+                // reset the input after we added a new item
+                document.getElementById("item").value = "";
+            }
+        });
+
+        // user press enter 
+
+        addInput.addEventListener("keypress",function(e){
+            // did the user press *enter*? if yes then continue
+            if (13 === e.keyCode){
+                // grab the value of the input tag
+                let newItem = document.getElementById("item").value;
+                // if the input tag is not empty then run our function to add an item
+                if (newItem) {
+                    // this function will add a new item to the todo list
+                    addItemTodo(newItem);
+                    // reset the input after we added a new item
+                    document.getElementById("item").value = "";
+                }
+            }
+        });
+
+        function addItemTodo(text){
+            // grab the `ul`
+            let list = document.getElementById("todo");
+            // create an `li`
+            let item = document.createElement('li');
+            // set the inside of our `li` the same as the parameter that we passed in the function, which is going to be the value set by the user in the input field
+            item.innerText = text;
+
+            //create container for our buttons remove and complete
+            let buttons = document.createElement('div');
+            buttons.classList.add("buttons");
+
+            // create the two buttons
+
+            let remove = document.createElement('button');
+            remove.classList.add('remove');
+            // add the SVG icon to the button
+            remove.innerHTML = removeSVG;
+            // add event listener for remove
+            // this function will be definedd later
+            remove.addEventListener("click",removeItem);
+
+            let complete = document.createElement('button');
+            complete.classList.add('complete');
+            // add the SVG icon to the button
+            complete.innerHTML = completeSVG;
+            // add event listener for complete
+            // this function will be defined later
+            complete.addEventListener("click",completeItem);
+
+            // append the buttons to the div
+            buttons.appendChild(remove);
+            buttons.appendChild(complete);
+
+            // append the whole div to the li
+            item.appendChild(buttons);
+
+            // prepend the `li` to the `ul`
+            list.insertBefore(item,list.childNodes[0]);
+        }
+
+        function completeItem(){
+            // grab the `li` by targeting the parent of the parent of the button (button -> div -> li)
+            let item = this.parentNode.parentNode;
+            // grab the `ul` (li -> ul)
+            let parent = item.parentNode;
+            // grab the parent id
+            let id = parent.id;
+
+            // check if the item should go in the completed or if it should be re-added to todo by using a ternary operator
+            let target = (id === "todo") ? document.getElementById("completed") : document.getElementById("todo");
+            // remove the item to its current `ul`
+            parent.removeChild(item);
+            // add the item to the new `ul`
+            target.insertBefore(item,target.childNodes[0]);
+        } 
+
+        function removeItem(){
+            // grab the `li` by targeting the parent of the parent of the button (button -> div -> li)
+            let item = this.parentNode.parentNode;
+            // grab the `ul` (li -> ul)
+            let parent  = item.parentNode;
+            // remove `li` from `ul`
+            parent.removeChild(item);
+        }
+    });
